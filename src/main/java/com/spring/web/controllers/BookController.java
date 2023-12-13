@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/book")
 public class BookController {
 
     private final BookServices bookServices;
@@ -21,32 +22,32 @@ public class BookController {
     }
 
 
-    @GetMapping("/books")
+    @GetMapping("/all")
     public ResponseEntity<List<Book>> getBooks() {
         List<Book> list =  this.bookServices.getAllBook();
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
-    @GetMapping( "/books/{id}")
+    @GetMapping( "/{id}")
     public ResponseEntity<Optional<Book>>  getBook ( @PathVariable("id") int id) {
         Optional<Book> book =  this.bookServices.getBookById(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(book);
     }
 
-    @PutMapping("/books")
-    public ResponseEntity<Book> addBook (Book book) {
+    @PostMapping
+    public ResponseEntity<Book> addBook (@RequestBody Book book) {
         Book result = this.bookServices.addBook(book);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    @DeleteMapping("/books/{id}")
-    public ResponseEntity deleteBook (@PathVariable int id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Integer> deleteBook (@PathVariable int id) {
         this.bookServices.deleteBook(id);
-        return ResponseEntity.status(HttpStatus.De)
+        return  ResponseEntity.status(HttpStatus.OK).body(id);
     }
 
-    @PutMapping("/books/{id}")
+    @PutMapping("/{id}")
     public Book updateBook (@RequestBody Book book, @PathVariable int id) {
         return this.bookServices.updateBook(book, id);
     }

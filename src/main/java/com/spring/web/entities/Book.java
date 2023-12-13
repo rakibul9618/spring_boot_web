@@ -1,18 +1,27 @@
 package com.spring.web.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "book_list")
 public final class Book {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "author_id")
+    private Author author;
 
-    private String author;
+    public Book(int id, String name, Author author) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+    }
+
+    public Book() {
+    }
 
     public int getId() {
         return id;
@@ -30,15 +39,11 @@ public final class Book {
         this.name = name;
     }
 
-    public String getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(Author author) {
         this.author = author;
     }
-
-
-
-
 }
